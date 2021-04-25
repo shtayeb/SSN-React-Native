@@ -1,11 +1,20 @@
 import React, { Component } from "react";
-import { Text, StyleSheet, View, TouchableOpacity, Image } from "react-native";
+import {
+  Text,
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Image,
+  Alert,
+  ActivityIndicator,
+} from "react-native";
 
 import API from "../../constants/API";
 
 import FormButton from "../../components/Form/FormButton";
 import SocialButtons from "../../components/Form/SocialButtons";
 import FormInput from "../../components/Form/FormInput";
+import { AppConsumer } from "../../Context/MyContext";
 
 export default class Login extends Component {
   constructor(props) {
@@ -14,44 +23,33 @@ export default class Login extends Component {
     this.state = {
       email: "",
       password: "",
+      loading: false,
     };
     this.onSignIn = this.onSignIn.bind(this);
   }
 
-  onSignIn() {
-    this.props.navigation.navigate("BottomNavigator");
-    // console.log("clikced");
-    // const { email, password } = this.state;
-    // //initial request to set Laravel authentication cookies
-    // const data = { email: email, password: password };
-    // API.get("sanctum/csrf-cookie")
-    //   .then(() => {
-    //     // console.log(token);
-    //     API.post("api/auth/login", data)
-    //       .then((res) => {
-    //         console.log(res.data);
-    //         // let errObj = JSON.parse(JSON.stringify(res));
-    //         // console.log(errObj);
-    //       })
-    //       .catch((err) => {
-    //         console.log("not the response");
-    //         console.log(err);
-    //         // let errObj = JSON.parse(JSON.stringify(err));
-    //         // console.log(errObj);
-    //       });
-    //   })
-    //   .catch((err) => {
-    //     console.log("not the csrf token");
-    //     // console.log(err);
-    //     let errObj = JSON.parse(JSON.stringify(err));
-    //     console.log(errObj);
-    //   });
+  onSignIn(logIn) {
+    // const data = { email: this.state.email, password: this.state.password };
+    // this.props.navigation.navigate("BottomNavigator");
+    this.setState({ loading: true }, async () => {
+      const res = await logIn(this.state.email, this.state.password);
+      // console.log(res);
+      if (res === "success") {
+        this.props.navigation.navigate("BottomNavigator");
+      }
+      if (res === "failed") {
+        this.setState({ loading: false });
+      }
+    });
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <Image source={require("../../images/logo.png")} style={styles.logo} />
+        <Image
+          source={require("../../assets/images/logo.png")}
+          style={styles.logo}
+        />
         <Text style={styles.text}>Danesh Community</Text>
         <FormInput
           placeholderText="Email"
@@ -70,12 +68,22 @@ export default class Login extends Component {
           onChangeText={(password) => this.setState({ password })}
         />
 
-        <FormButton
-          buttonTitle="Sign In"
-          onPress={() => {
-            this.onSignIn();
+        {this.state.loading && (
+          <ActivityIndicator size="large" color="#00ff00" />
+        )}
+
+        <AppConsumer>
+          {(value) => {
+            return (
+              <FormButton
+                buttonTitle="Sign In"
+                onPress={() => {
+                  this.onSignIn(value.logIn);
+                }}
+              />
+            );
           }}
-        />
+        </AppConsumer>
 
         <TouchableOpacity style={styles.forgotButton}>
           <Text style={styles.forgotButton}>Forgot Password</Text>

@@ -1,8 +1,22 @@
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { API_URL } from "../constants/Variables";
 
-export default axios.create({
-  baseURL: `http://192.168.43.12:80/`,
-  // withCredentials: true,
+// Next we make an 'instance' of it
+const API = axios.create({
+  baseURL: API_URL,
 });
 
-// export const SITE_URL = "http://localhost:8000/api/";
+const getToken = async () => {
+  try {
+    return await AsyncStorage.getItem("@AuthToken");
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+getToken().then(async (res) => {
+  // console.log(res);
+  API.defaults.headers.common["Authorization"] = "Bearer " + res;
+});
+export default API;

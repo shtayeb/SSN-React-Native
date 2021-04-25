@@ -70,7 +70,7 @@ export default class Details extends React.Component {
             </View>
 
             <Image
-              source={require("../../images/p2.jpg")}
+              source={require("../../assets/images/p2.jpg")}
               style={{
                 height: 100,
                 width: 100,
@@ -239,7 +239,7 @@ export default class Details extends React.Component {
               }}
             >
               <ImageBackground
-                source={require("../../images/7.jpg")}
+                source={require("../../assets/images/7.jpg")}
                 style={{
                   width: 280,
                   height: 180,

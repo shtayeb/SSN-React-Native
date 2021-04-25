@@ -4,6 +4,7 @@ import { StyleSheet, Text, View } from "react-native";
 // import * as Font from "expo-font";
 import AppNavigator from "./components/Navigators/Navigator";
 import AppLoading from "expo-app-loading";
+import { AppProvider } from "./components/Context/MyContext";
 
 export default class App extends React.Component {
   state = {
@@ -18,6 +19,12 @@ export default class App extends React.Component {
     this.setState({ isFontLoaded: true });
   }
   render() {
-    return this.state.isFontLoaded === true ? <AppNavigator /> : <AppLoading />;
+    return this.state.isFontLoaded === true ? (
+      <AppProvider>
+        <AppNavigator />
+      </AppProvider>
+    ) : (
+      <AppLoading />
+    );
   }
 }

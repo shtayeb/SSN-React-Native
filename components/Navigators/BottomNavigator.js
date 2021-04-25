@@ -9,7 +9,7 @@ import Explore from "../screens/main/Explore";
 import { FontAwesome } from "@expo/vector-icons";
 const Tab = createMaterialBottomTabNavigator();
 
-export default function BottomNavigator() {
+export default function BottomNavigator({ route }) {
   return (
     <Tab.Navigator
       initialRouteName="Feed"
