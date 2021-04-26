@@ -1,17 +1,27 @@
-import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-export default function Explore() {
+import React, { useEffect, useContext } from "react";
+import { StyleSheet, SafeAreaView } from "react-native";
+import ExploreCard from "../../components/ExploreCard";
+import { AppConsumer } from "../../Context/MyContext";
+import { AppContext } from "../../Context/MyContext";
+import Header from "../../components/Header";
+export default function Explore({ navigation }) {
+  const contextValue = React.useContext(AppContext);
+  const Data = contextValue["getExplore"];
+  // const profileNew = contextValue["profile"];
+
+  useEffect(() => {
+    Data();
+  }, []);
+
   return (
-    <View style={styles.screen}>
-      <Text>Explore Page</Text>
-    </View>
+    <AppConsumer>
+      {({ explorePosts }) => (
+        <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
+          {explorePosts && <ExploreCard data={explorePosts} />}
+        </SafeAreaView>
+      )}
+    </AppConsumer>
   );
 }
 
-const styles = StyleSheet.create({
-  screen: {
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 50,
-  },
-});
+const styles = StyleSheet.create({});

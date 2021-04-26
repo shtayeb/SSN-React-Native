@@ -1,12 +1,15 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, Button } from "react-native";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import Feed from "../screens/main/Feed";
 import Books from "../screens/main/Books";
 import Profile from "../screens/main/Profile";
 import BookSearch from "../screens/main/BookSearch";
 import Explore from "../screens/main/Explore";
+import BookCard from "../screens/main/BookCard";
 import { FontAwesome } from "@expo/vector-icons";
+import DrawerNavigation from "./DrawerNavigation";
+
 const Tab = createMaterialBottomTabNavigator();
 
 export default function BottomNavigator({ route }) {
@@ -54,8 +57,17 @@ export default function BottomNavigator({ route }) {
         }}
       />
       <Tab.Screen
+        name="BookCard"
+        component={BookCard}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <FontAwesome name="user" size={22} color="#2863d0" />
+          ),
+        }}
+      />
+      <Tab.Screen
         name="Profile"
-        component={Profile}
+        component={DrawerNavigation}
         options={{
           tabBarIcon: ({ color }) => (
             <FontAwesome name="user" size={22} color="#2863d0" />

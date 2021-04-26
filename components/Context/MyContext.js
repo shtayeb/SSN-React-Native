@@ -14,6 +14,10 @@ class AppProvider extends Component {
     test: "done",
     loggedIn: false,
     feedPosts: {},
+    profile: {},
+    stats: {},
+    posts: [],
+    explorePosts: [],
     // detailProduct: detailProduct,
   };
 
@@ -68,7 +72,7 @@ class AppProvider extends Component {
         .then(() => {
           API.get("api/me")
             .then((res) => {
-              //   console.log(res.data);
+              // console.log(res.data);
               this.setState({ user: res.data });
               this.setFeedPosts();
             })
@@ -115,7 +119,9 @@ class AppProvider extends Component {
         API.get("api/main-page")
           .then((res) => {
             console.log(res.data);
-            this.setState({ feedPosts: res.data });
+            this.setState(() => {
+              return { feedPosts: res.data };
+            });
           })
           .catch((err) => {
             console.log("not the response");
@@ -130,7 +136,59 @@ class AppProvider extends Component {
   };
 
   //   The Functions in the context
-  getItem = (id) => {
+  getProfile = () => {
+    API.get("sanctum/csrf-cookie")
+      .then(() => {
+        API.get("api/profile/" + this.state.user.id)
+          .then((res) => {
+            console.log(res.data);
+            this.setState(() => {
+              return { profile: res.data.profile };
+            });
+            this.setState(() => {
+              return { stats: res.data.stats[0] };
+            });
+            this.setState(() => {
+              return { posts: res.data.posts };
+            });
+            console.log(this.state.posts);
+          })
+          .catch((err) => {
+            console.log("not the response");
+            console.log(err);
+            return "failed";
+          });
+      })
+      .catch((err) => {
+        console.log(err);
+        return "failed";
+      });
+  };
+
+  getExplore = () => {
+    API.get("sanctum/csrf-cookie")
+      .then(() => {
+        API.get("api/explore")
+          .then((res) => {
+            console.log(res.data);
+            this.setState(() => {
+              return { explorePosts: res.data };
+            });
+          })
+          .catch((err) => {
+            console.log("not the response");
+            console.log(err);
+            return "failed";
+          });
+      })
+      .catch((err) => {
+        console.log(err);
+        return "failed";
+      });
+  };
+
+  //   The Functions in the context
+  __getProfile = (id) => {
     const product = this.state.products.find((item) => item.id === id);
     return product;
   };
@@ -151,6 +209,8 @@ class AppProvider extends Component {
           handleDetail: this.handleDetail,
           logOut: this.logOut,
           logIn: this.logIn,
+          getProfile: this.getProfile,
+          getExplore: this.getExplore,
         }}
       >
         {this.props.children}
@@ -161,4 +221,4 @@ class AppProvider extends Component {
 
 const AppConsumer = AppContext.Consumer;
 
-export { AppProvider, AppConsumer };
+export { AppProvider, AppConsumer, AppContext };

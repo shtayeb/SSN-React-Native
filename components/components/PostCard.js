@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 // import Ionicons from "react-native-vector-icons/Ionicons";
 import Ionicons from "@expo/vector-icons/Ionicons";
+// import { Ionicons } from "react-native-vector-icons";
 import { RESOURCE_URL } from "../constants/Variables";
 import {
   Card,
@@ -45,16 +46,16 @@ const PostCard = ({ item }) => {
   return (
     <Card key={item.id}>
       <UserInfo>
-        <UserImg source={RESOURCE_URL + item.img} />
+        <UserImg source={{ uri: RESOURCE_URL + item.img }} />
         <UserInfoText>
           <TouchableOpacity onPress={() => {}}>
-            <UserName>item.user.name</UserName>
+            <UserName>{item.user.name}</UserName>
           </TouchableOpacity>
           <PostTime>4 hours</PostTime>
         </UserInfoText>
       </UserInfo>
       <PostText>{item.caption}</PostText>
-      <PostImg source={RESOURCE_URL + item.img} />
+      <PostImg source={{ uri: RESOURCE_URL + item.img }} />
 
       <Container style={{ flexDirection: "row" }}>
         <PostTime style={{ padding: 6 }}>2 Likes</PostTime>
