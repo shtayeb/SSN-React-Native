@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View, Button } from "react-native";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-import Feed from "../screens/main/Feed";
+import Feed from "../screens/main/Feed/Feed";
 import Books from "../screens/main/Books";
 import Profile from "../screens/main/Profile";
 import BookSearch from "../screens/main/BookSearch";

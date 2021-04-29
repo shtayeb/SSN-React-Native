@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   StyleSheet,
+  Linking,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 // import { Entypo } from "@expo/vector-icons";
@@ -14,7 +15,7 @@ import { AppConsumer } from "../../Context/MyContext";
 import { AppContext } from "../../Context/MyContext";
 // import PostCard from "../../components/PostCard";
 import ExploreCard from "../../components/ExploreCard";
-
+import Header from "../../components/Header";
 export default function Profile({ navigation }) {
   const [collectionSelected, setCollectionSelected] = useState(true);
   const contextValue = React.useContext(AppContext);
@@ -31,54 +32,93 @@ export default function Profile({ navigation }) {
 
   const ListHeader = (stats, profile) => {
     return (
-      <ScrollView
-        style={styles.container}
-        contentContainerStyle={{
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-        showsVerticalScrollIndicator={false}
-      >
-        <Image
-          style={styles.userImg}
-          source={{
-            uri: stats.profileImage
-              ? "http://192.168.43.12" + stats.profileImage ||
-                "https://lh5.googleusercontent.com/-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg"
-              : "https://lh5.googleusercontent.com/-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg",
-          }}
+      <SafeAreaView>
+        <Header
+          title={profile.title}
+          openDrawer={navigation.openDrawer}
+          goBack={navigation.goBack}
         />
-        <Text style={styles.userName}>{profile.title}</Text>
-        {/* <Text>{route.params ? route.params.userId : user.uid}</Text> */}
-        <Text style={styles.aboutUser}></Text>
-        <View style={styles.userBtnWrapper}>
-          {/* {route.params ? ( */}
-          {/* <> */}
-          <TouchableOpacity style={styles.userBtn} onPress={() => {}}>
-            <Text style={styles.userBtnTxt}>Message</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.userBtn} onPress={() => {}}>
-            <Text style={styles.userBtnTxt}>Follow</Text>
-          </TouchableOpacity>
-          {/* </> */}
-          {/* ) : ( */}
-          {/* <> */}
-          <TouchableOpacity
-            style={styles.userBtn}
-            onPress={() => {
-              navigation.navigate("EditProfile");
+        <ScrollView
+          style={styles.container}
+          contentContainerStyle={{
+            justifyContent: "center",
+            // alignItems: "center",
+          }}
+          showsVerticalScrollIndicator={false}
+        >
+          {/* start of like instagram */}
+          <View style={styles.myInsta}>
+            <Image
+              style={styles.userImg}
+              source={{
+                uri: stats.profileImage
+                  ? "http://192.168.43.12" + stats.profileImage ||
+                    "https://lh5.googleusercontent.com/-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg"
+                  : "https://lh5.googleusercontent.com/-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg",
+              }}
+            />
+            <View style={styles.myInstaUserInfoWrapper}>
+              <View style={styles.userInfoItem}>
+                <Text style={styles.userInfoTitle}>{stats.postCount}</Text>
+                <Text style={styles.userInfoSubTitle}>Posts</Text>
+              </View>
+              <View style={styles.userInfoItem}>
+                <Text style={styles.userInfoTitle}>{stats.followersCount}</Text>
+                <Text style={styles.userInfoSubTitle}>Followers</Text>
+              </View>
+              <View style={styles.userInfoItem}>
+                <Text style={styles.userInfoTitle}>
+                  {stats.followingsCount}
+                </Text>
+                <Text style={styles.userInfoSubTitle}>Following</Text>
+              </View>
+            </View>
+          </View>
+          {/* end of like instagram */}
+
+          <View style={{ margin: 10 }}>
+            <Text style={styles.userName}>{profile.title}</Text>
+            {/* <Text>{route.params ? route.params.userId : user.uid}</Text> */}
+            <Text style={styles.aboutUser}>{profile.desc}</Text>
+            <Text
+              style={[styles.aboutUser, { marginBottom: 20, color: "#2e64e5" }]}
+              onPress={() => Linking.openURL(profile.url)}
+            >
+              {profile.url}
+            </Text>
+          </View>
+
+          <View
+            style={{
+              flexDirection: "row",
             }}
           >
-            <Text style={styles.userBtnTxt}>Edit</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.userBtn} onPress={() => {}}>
-            <Text style={styles.userBtnTxt}>Logout</Text>
-          </TouchableOpacity>
-          {/* </> */}
-          {/* )} */}
-        </View>
+            <TouchableOpacity
+              style={[
+                styles.userBtn,
+                { flex: 1, alignItems: "center", marginBottom: 5 },
+              ]}
+              onPress={() => {
+                navigation.navigate("EditProfile");
+              }}
+            >
+              <Text style={styles.userBtnTxt}>Edit Profile</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.userBtnWrapper}>
+            <TouchableOpacity style={styles.userBtn}>
+              <Text style={styles.userBtnTxt}>Message</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.userBtn} onPress={() => {}}>
+              <Text style={styles.userBtnTxt}>Follow</Text>
+            </TouchableOpacity>
 
-        <View style={styles.userInfoWrapper}>
+            <TouchableOpacity style={styles.userBtn} onPress={() => {}}>
+              <Text style={styles.userBtnTxt}>Logout</Text>
+            </TouchableOpacity>
+          </View>
+
+          {/* <View style={styles.userInfoWrapper}>
           <View style={styles.userInfoItem}>
             <Text style={styles.userInfoTitle}>{stats.postCount}</Text>
             <Text style={styles.userInfoSubTitle}>Posts</Text>
@@ -91,8 +131,9 @@ export default function Profile({ navigation }) {
             <Text style={styles.userInfoTitle}>{stats.followingsCount}</Text>
             <Text style={styles.userInfoSubTitle}>Following</Text>
           </View>
-        </View>
-      </ScrollView>
+        </View> */}
+        </ScrollView>
+      </SafeAreaView>
     );
   };
 
@@ -116,26 +157,34 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   userImg: {
-    height: 150,
-    width: 150,
+    height: 105,
+    width: 105,
     borderRadius: 75,
+    margin: 10,
+  },
+  myInsta: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  myInstaUserInfoWrapper: {
+    flexDirection: "row",
   },
   userName: {
     fontSize: 18,
     fontWeight: "bold",
     marginTop: 10,
-    marginBottom: 10,
+    // marginBottom: 10,
   },
   aboutUser: {
     fontSize: 12,
     fontWeight: "600",
     color: "#666",
-    textAlign: "center",
-    marginBottom: 10,
+    // textAlign: "center",
   },
   userBtnWrapper: {
     flexDirection: "row",
-    justifyContent: "center",
+    // justifyContent: "center",
     width: "100%",
     marginBottom: 10,
   },
@@ -146,6 +195,8 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 12,
     marginHorizontal: 5,
+    flex: 1,
+    alignItems: "center",
   },
   userBtnTxt: {
     color: "#2e64e5",
@@ -158,11 +209,11 @@ const styles = StyleSheet.create({
   },
   userInfoItem: {
     justifyContent: "center",
+    marginHorizontal: 15,
   },
   userInfoTitle: {
     fontSize: 20,
     fontWeight: "bold",
-    marginBottom: 5,
     textAlign: "center",
   },
   userInfoSubTitle: {

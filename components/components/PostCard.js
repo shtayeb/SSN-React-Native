@@ -20,33 +20,161 @@ import {
 } from "../components/styles/FeedStyles";
 
 import { TouchableOpacity } from "react-native-gesture-handler";
+import API from "../constants/API";
 
 const PostCard = ({ item }) => {
   // likeIcon = item.liked ? "heart" : "heart-outline";
-  let likeIcon = item.liked ? "heart" : "heart-outline";
-  let likeIconColor = item.liked ? "#2e64e5" : "#333";
-  let likeText = "Like";
-  let commentText = "Comment";
-  if (item.likes == 1) {
-    likeText = "1 Like";
-  } else if (item.likes > 1) {
-    likeText = item.likes + " Likes";
-  } else {
-    likeText = "Like";
-  }
+  const [likeCount, setLikeCount] = useState(item.likes_count);
+  const [commentCount, setCommentCount] = useState(item.comment_count);
+  const [saveCount, setSaveCount] = useState(item.saves_count);
+  const [isLiked, setIsLiked] = useState(item.liked_by_auth_user);
 
-  if (item.comments == 1) {
-    commentText = "1 Comment";
-  } else if (item.comments > 1) {
-    commentText = item.comments + " Comments";
-  } else {
-    commentText = "Comment";
-  }
+  // for the save functionality
+  const [isSaved, setIsSaved] = useState(item.saved_by_auth_user);
+
+  let likeIcon = isLiked ? "heart" : "heart-outline";
+  let likeIconColor = isLiked ? "#2e64e5" : "#333";
+
+  let saveIcon = isSaved ? "bookmark" : "bookmark-outline";
+  let saveIconColor = isSaved ? "#2e64e5" : "#333";
+  // if (item.likes_count == 1) {
+  //   likeText = "Like";
+  // } else if (item.likes_count > 1) {
+  //   likeText = "Likes";
+  // } else {
+  //   likeText = "Like";
+  // }
+
+  // if (item.comment_count == 1) {
+  //   commentText = "1 Comment";
+  // } else if (item.comment_count > 1) {
+  //   commentText = item.comment_count + " Comments";
+  // } else {
+  //   commentText = "Comment";
+  // }
+  const likePressHandler = () => {
+    if (isLiked) {
+      //first decrease the count if errors happened revert back
+      setLikeCount((likeCount) => {
+        return parseInt(likeCount) - 1;
+      });
+      //call to unlike api end point
+      API.get("sanctum/csrf-cookie")
+        .then(() => {
+          API.post("api/posts/" + item.id + "/unlike")
+            .then((res) => {
+              if (res.status == 200) {
+                // this.status = !this.status;
+                // this.likes = parseInt(this.likes) - 1;
+                console.log("unliked");
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+              setLikeCount((likeCount) => {
+                return parseInt(likeCount) + 1;
+              });
+            });
+        })
+        .catch((err) => {
+          console.log(err);
+          return "failed";
+        });
+    } else {
+      //first increase the count if errors happened revert back
+      setLikeCount((likeCount) => {
+        return parseInt(likeCount) + 1;
+      });
+      //call to like api end point
+      API.get("sanctum/csrf-cookie")
+        .then(() => {
+          API.post("api/posts/" + item.id + "/likes")
+            .then((res) => {
+              if (res.status == 200) {
+                console.log("liked");
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+              setLikeCount((likeCount) => {
+                return parseInt(likeCount) - 1;
+              });
+            });
+        })
+        .catch((err) => {
+          console.log(err);
+          return "failed";
+        });
+    }
+    setIsLiked((isLiked) => {
+      return !isLiked;
+    });
+  };
+  // End of like press handler
+
+  //start of save press handler
+  const savePressHandler = () => {
+    if (isSaved) {
+      //first decrease the count if errors happened revert back
+      setSaveCount((saveCount) => {
+        return parseInt(saveCount) - 1;
+      });
+      //call to unlike api end point
+      API.get("sanctum/csrf-cookie")
+        .then(() => {
+          API.post("api/posts/" + item.id + "/unsave")
+            .then((res) => {
+              if (res.status == 200) {
+                console.log("unsaved");
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+              setSaveCount((saveCount) => {
+                return parseInt(saveCount) + 1;
+              });
+            });
+        })
+        .catch((err) => {
+          console.log(err);
+          return "failed";
+        });
+    } else {
+      //first increase the count if errors happened revert back
+      setSaveCount((saveCount) => {
+        return parseInt(saveCount) + 1;
+      });
+      // call to like api end point
+      API.get("sanctum/csrf-cookie")
+        .then(() => {
+          API.post("api/posts/" + item.id + "/save")
+            .then((res) => {
+              if (res.status == 200) {
+                console.log("save");
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+              setSaveCount((saveCount) => {
+                return parseInt(saveCount) - 1;
+              });
+            });
+        })
+        .catch((err) => {
+          console.log(err);
+          return "failed";
+        });
+    }
+    setIsSaved((isSaved) => {
+      return !isSaved;
+    });
+  };
+  // End of save press handler
 
   return (
     <Card key={item.id}>
       <UserInfo>
-        <UserImg source={{ uri: RESOURCE_URL + item.img }} />
+        <UserImg source={{ uri: RESOURCE_URL + item.user.profile.image }} />
         <UserInfoText>
           <TouchableOpacity onPress={() => {}}>
             <UserName>{item.user.name}</UserName>
@@ -58,19 +186,23 @@ const PostCard = ({ item }) => {
       <PostImg source={{ uri: RESOURCE_URL + item.img }} />
 
       <Container style={{ flexDirection: "row" }}>
-        <PostTime style={{ padding: 6 }}>2 Likes</PostTime>
-        <PostTime style={{ padding: 6 }}>2 Comments</PostTime>
-        <PostTime style={{ padding: 6 }}>2 Shares</PostTime>
+        <PostTime style={{ padding: 6 }}>{likeCount} Likes</PostTime>
+        <PostTime style={{ padding: 6 }}>{commentCount} Comments</PostTime>
+        <PostTime style={{ padding: 6 }}>{saveCount} Saves</PostTime>
       </Container>
 
       <InteractionWrapper>
-        <Interaction active={item.liked}>
+        <Interaction onPress={likePressHandler}>
           <Ionicons name={likeIcon} size={25} color={likeIconColor} />
-          <InteractionText active={item.liked}>{likeText}</InteractionText>
+          <InteractionText>Like</InteractionText>
         </Interaction>
         <Interaction>
           <Ionicons name="md-chatbubble-outline" size={25} />
-          <InteractionText>{commentText}</InteractionText>
+          <InteractionText>Comment</InteractionText>
+        </Interaction>
+        <Interaction onPress={savePressHandler}>
+          <Ionicons name={saveIcon} size={25} color={saveIconColor} />
+          <InteractionText>Save</InteractionText>
         </Interaction>
         {/* {user.uid == item.userId ? (
           <Interaction onPress={() => onDelete(item.id)}>

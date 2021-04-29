@@ -81,7 +81,7 @@ export const Interaction = styled.TouchableOpacity`
 
 export const InteractionText = styled.Text`
   font-size: 12px;
-  font-family: "Lato-Regular";
+  font-family: "Regular";
   font-weight: bold;
   color: ${(props) => (props.active ? "#2e64e5" : "#333")};
   margin-top: 5px;

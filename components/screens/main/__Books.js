@@ -10,13 +10,10 @@ import {
   FlatList,
   Button,
 } from "react-native";
-import { RESOURCE_URL } from "../../constants/Variables";
 
 export default class ProductDetail extends Component {
   constructor(props) {
     super(props);
-    const { navigation } = this.props;
-    // const item = navigation.getParam;
   }
 
   clickEventListener() {
@@ -30,11 +27,19 @@ export default class ProductDetail extends Component {
           <View style={{ alignItems: "center", marginHorizontal: 30 }}>
             <Image
               style={styles.productImg}
-              source={{ uri: RESOURCE_URL + item.cover }}
+              source={{
+                uri:
+                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3v7KDJN7TAoJa5sFaPWcp1HX8JFcpF3z5K3ngz4L6kWoEP7Ca",
+              }}
             />
-            <Text style={styles.name}>{item.name}</Text>
+            <Text style={styles.name}>Super Soft T-Shirt</Text>
             <Text style={styles.price}>$ 12.22</Text>
-            <Text style={styles.description}>{item.caption}</Text>
+            <Text style={styles.description}>
+              Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean
+              commodo ligula eget dolor. Aenean massa. Cum sociis natoque
+              penatibus et magnis dis parturient montes, nascetur ridiculus mus.
+              Donec quam felis, ultricies nec
+            </Text>
           </View>
           <View style={styles.starContainer}>
             <Image

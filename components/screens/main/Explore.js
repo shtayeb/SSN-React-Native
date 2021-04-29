@@ -3,7 +3,8 @@ import { StyleSheet, SafeAreaView } from "react-native";
 import ExploreCard from "../../components/ExploreCard";
 import { AppConsumer } from "../../Context/MyContext";
 import { AppContext } from "../../Context/MyContext";
-import Header from "../../components/Header";
+
+import HeaderOther from "../../components/HeaderOther";
 export default function Explore({ navigation }) {
   const contextValue = React.useContext(AppContext);
   const Data = contextValue["getExplore"];
@@ -17,6 +18,11 @@ export default function Explore({ navigation }) {
     <AppConsumer>
       {({ explorePosts }) => (
         <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
+          <HeaderOther
+            title="Explore"
+            goBack={navigation.goBack}
+            goHome={navigation.navigate}
+          />
           {explorePosts && <ExploreCard data={explorePosts} />}
         </SafeAreaView>
       )}

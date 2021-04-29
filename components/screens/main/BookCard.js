@@ -10,145 +10,142 @@ import {
   FlatList,
   TextInput,
 } from "react-native";
+import API from "../../constants/API";
+import { RESOURCE_URL } from "../../constants/Variables";
 
 export default class Users extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: [
-        {
-          id: 1,
-          name: "Mark Doe",
-          position: "CEO",
-          image: "https://bootdey.com/img/Content/avatar/avatar7.png",
-        },
-        {
-          id: 1,
-          name: "John Doe",
-          position: "CTO",
-          image: "https://bootdey.com/img/Content/avatar/avatar1.png",
-        },
-        {
-          id: 2,
-          name: "Clark Man",
-          position: "Creative designer",
-          image: "https://bootdey.com/img/Content/avatar/avatar6.png",
-        },
-        {
-          id: 3,
-          name: "Jaden Boor",
-          position: "Front-end dev",
-          image: "https://bootdey.com/img/Content/avatar/avatar5.png",
-        },
-        {
-          id: 4,
-          name: "Srick Tree",
-          position: "Backend-end dev",
-          image: "https://bootdey.com/img/Content/avatar/avatar4.png",
-        },
-        {
-          id: 5,
-          name: "John Doe",
-          position: "Creative designer",
-          image: "https://bootdey.com/img/Content/avatar/avatar3.png",
-        },
-        {
-          id: 6,
-          name: "John Doe",
-          position: "Manager",
-          image: "https://bootdey.com/img/Content/avatar/avatar2.png",
-        },
-        {
-          id: 8,
-          name: "John Doe",
-          position: "IOS dev",
-          image: "https://bootdey.com/img/Content/avatar/avatar1.png",
-        },
-        {
-          id: 9,
-          name: "John Doe",
-          position: "Web dev",
-          image: "https://bootdey.com/img/Content/avatar/avatar4.png",
-        },
-        {
-          id: 9,
-          name: "John Doe",
-          position: "Analyst",
-          image: "https://bootdey.com/img/Content/avatar/avatar7.png",
-        },
-      ],
+      keyword: "",
+      data: null,
     };
+    this.handleSearch = this.handleSearch.bind(this);
+  }
+
+  handleSearch(keyword) {
+    this.setState({ keyword });
+    // console.log(this.state.keyword);
+    API.get("api/search/book", { keyword: keyword })
+      .then((res) => {
+        console.log(res.data);
+        // this.setState({ data: res.data });
+        this.setState(() => {
+          return { data: res.data };
+        });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   }
 
   clickEventListener(item) {
-    Alert.alert(item.name);
+    // Alert.alert(item.name);
+    console.log(item);
+    this.props.navigation.navigate("Books", { item });
   }
 
   render() {
     return (
       <View style={styles.container}>
+        {/* the search bar */}
         <View style={styles.formContent}>
+          <TouchableOpacity>
+            <Image
+              style={[styles.icon, styles.inputIcon, styles.backButton]}
+              source={require("../../assets/al.png")}
+              onPress={() => this.props.navigation.goBack()}
+            />
+          </TouchableOpacity>
           <View style={styles.inputContainer}>
             <Image
               style={[styles.icon, styles.inputIcon]}
-              source={{
-                uri: "https://png.icons8.com/search/androidL/100/000000",
-              }}
+              source={require("../../assets/search.png")}
             />
             <TextInput
               style={styles.inputs}
               ref={"txtPassword"}
-              placeholder="Search"
+              // labelValue={this.state.keyword}
+              onChangeText={(keyword) => this.handleSearch(keyword)}
+              placeholder="Enter Name of The Book"
               underlineColorAndroid="transparent"
-              onChangeText={(name_address) => this.setState({ name_address })}
             />
           </View>
+          <TouchableOpacity>
+            <Image
+              style={[styles.icon, styles.inputIcon, styles.menuButton]}
+              source={require("../../assets/menu.png")}
+              onPress={() => this.props.navigation.goBack(null)}
+            />
+          </TouchableOpacity>
         </View>
-        <FlatList
-          style={styles.list}
-          contentContainerStyle={styles.listContainer}
-          data={this.state.data}
-          horizontal={false}
-          numColumns={2}
-          keyExtractor={(item) => {
-            return item.id;
-          }}
-          renderItem={({ item }) => {
-            return (
-              <TouchableOpacity
-                style={styles.card}
-                onPress={() => {
-                  this.clickEventListener(item);
-                }}
-              >
-                <View style={styles.cardHeader}>
-                  <Image
+        {/* end of the search bar */}
+
+        {/* start of conditional part */}
+        {this.state.data ? (
+          <FlatList
+            style={styles.list}
+            contentContainerStyle={styles.listContainer}
+            data={this.state.data}
+            horizontal={false}
+            numColumns={2}
+            keyExtractor={(item) => {
+              return item.id.toString();
+            }}
+            renderItem={({ item }) => {
+              return (
+                <TouchableOpacity
+                  style={styles.card}
+                  onPress={() => {
+                    this.clickEventListener(item);
+                  }}
+                >
+                  <View style={styles.cardHeader}>
+                    {/* <Image
                     style={styles.icon}
                     source={{
                       uri:
+                        RESOURCE_URL + item.cover ||
                         "https://img.icons8.com/flat_round/64/000000/hearts.png",
                     }}
-                  />
-                </View>
-                <Image style={styles.userImage} source={{ uri: item.image }} />
-                <View style={styles.cardFooter}>
-                  <View
-                    style={{ alignItems: "center", justifyContent: "center" }}
-                  >
-                    <Text style={styles.name}>{item.name}</Text>
-                    <Text style={styles.position}>{item.position}</Text>
-                    <TouchableOpacity
-                      style={styles.followButton}
-                      onPress={() => this.clickEventListener(item)}
-                    >
-                      <Text style={styles.followButtonText}>Follow</Text>
-                    </TouchableOpacity>
+                  /> */}
                   </View>
-                </View>
-              </TouchableOpacity>
-            );
-          }}
-        />
+                  <Image
+                    style={styles.userImage}
+                    source={{ uri: RESOURCE_URL + item.cover }}
+                  />
+                  <View style={styles.cardFooter}>
+                    <View
+                      style={{ alignItems: "center", justifyContent: "center" }}
+                    >
+                      <Text style={styles.name}>{item.name}</Text>
+                      <Text style={styles.position}>{item.author}</Text>
+                      <TouchableOpacity
+                        style={styles.followButton}
+                        onPress={() => this.clickEventListener(item)}
+                      >
+                        <Text style={styles.followButtonText}>Details</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                </TouchableOpacity>
+              );
+            }}
+          />
+        ) : (
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Image source={require("../../assets/searchimg.png")} />
+            <Text>Search for the Books From Here</Text>
+          </View>
+        )}
+
+        {/* end of the conditional part */}
       </View>
     );
   }
@@ -157,7 +154,7 @@ export default class Users extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 20,
+    marginTop: 10,
   },
   inputs: {
     height: 45,
@@ -195,6 +192,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     flexBasis: "46%",
     marginHorizontal: 5,
+    borderRadius: 8,
   },
   cardFooter: {
     paddingVertical: 17,
@@ -219,22 +217,22 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 1,
   },
   userImage: {
-    height: 120,
+    height: 150,
     width: 120,
-    borderRadius: 60,
+    borderRadius: 2,
     alignSelf: "center",
-    borderColor: "#DCDCDC",
-    borderWidth: 3,
+    // borderColor: "#DCDCDC",
+    // borderWidth: 3,
   },
   name: {
-    fontSize: 18,
+    fontSize: 15,
     flex: 1,
     alignSelf: "center",
     color: "#008080",
     fontWeight: "bold",
   },
   position: {
-    fontSize: 14,
+    fontSize: 10,
     flex: 1,
     alignSelf: "center",
     color: "#696969",
@@ -251,7 +249,7 @@ const styles = StyleSheet.create({
   },
   followButtonText: {
     color: "#FFFFFF",
-    fontSize: 20,
+    fontSize: 14,
   },
   icon: {
     height: 20,
@@ -259,7 +257,8 @@ const styles = StyleSheet.create({
   },
   formContent: {
     flexDirection: "row",
-    marginTop: 30,
+    marginTop: 20,
+    alignItems: "center",
   },
   inputContainer: {
     borderBottomColor: "#F5FCFF",
@@ -270,6 +269,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     flex: 1,
-    margin: 10,
+    margin: 2,
+  },
+  menuButton: {
+    marginLeft: 10,
+    marginRight: 15,
+  },
+  backButton: {
+    marginRight: 10,
   },
 });

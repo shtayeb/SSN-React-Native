@@ -141,7 +141,7 @@ class AppProvider extends Component {
       .then(() => {
         API.get("api/profile/" + this.state.user.id)
           .then((res) => {
-            console.log(res.data);
+            // console.log(res.data);
             this.setState(() => {
               return { profile: res.data.profile };
             });
