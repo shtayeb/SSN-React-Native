@@ -11,11 +11,9 @@ import {
   SafeAreaView,
   Button,
 } from "react-native";
-// import BottomSheet, { BottomSheetFlatList } from "@gorhom/bottom-sheet";
-import {
-  BottomSheetModal,
-  BottomSheetModalProvider,
-} from "@gorhom/bottom-sheet";
+import BottomSheet, { BottomSheetFlatList } from "@gorhom/bottom-sheet";
+import { call } from "react-native-reanimated";
+
 export default function Contacts() {
   // const { expand } = useBottomSheet();
   const [calls, setCalls] = useState([
@@ -82,22 +80,30 @@ export default function Contacts() {
   ]);
 
   // ref
-  const bottomSheetModalRef = useRef(null);
+  const sheetRef = useRef(null);
   // variables
   // const data = useMemo(calls);
   const data = useMemo(() => calls, []);
   const snapPoints = useMemo(() => ["25%", "50%", "90%"], []);
   //callbacks
-  const handleSheetChanges = useCallback((index: number) => {
+  const handleSheetChange = useCallback((index: number) => {
     console.log("handleSheetChanges", index);
   }, []);
-  const handlePresentModalPress = useCallback(() => {
-    bottomSheetModalRef.current?.present();
+  const handleClosePress = useCallback(() => {
+    sheetRef.current?.close();
+  }, []);
+  const handleSnapPress = useCallback((index) => {
+    sheetRef.current?.snapTo(index);
   }, []);
 
-  const handleDismiss = useCallback(() => {
-    bottomSheetModalRef.current?.onDismiss();
-  }, []);
+  const renderItem__ = useCallback(
+    ({ item }) => (
+      <View style={styles.itemContainer}>
+        <Text>{item}</Text>
+      </View>
+    ),
+    []
+  );
 
   // render
   const renderItem = useCallback(
@@ -128,25 +134,18 @@ export default function Contacts() {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <BottomSheetModalProvider>
-        <View style={styles.container}>
-          <BottomSheetModal
-            ref={bottomSheetModalRef}
-            index={1}
-            snapPoints={snapPoints}
-            onChange={handleSheetChanges}
-          >
-            <FlatList
-              // extraData={this.state}
-              data={calls}
-              keyExtractor={(item) => {
-                return item.id.toString();
-              }}
-              renderItem={renderItem}
-            />
-          </BottomSheetModal>
-        </View>
-      </BottomSheetModalProvider>
+      <BottomSheet
+        ref={sheetRef}
+        snapPoints={snapPoints}
+        onChange={handleSheetChange}
+      >
+        <BottomSheetFlatList
+          data={data}
+          keyExtractor={(i) => i.id.toString()}
+          renderItem={renderItem}
+          contentContainerStyle={styles.contentContainer}
+        />
+      </BottomSheet>
       <View
         style={{
           marginTop: 40,
@@ -154,8 +153,17 @@ export default function Contacts() {
           alignItems: "center",
         }}
       >
-        <Button title="expand the Sheet" onPress={handlePresentModalPress} />
+        <Button title="expand the Sheet" onPress={handleClosePress} />
+        <Button title="Snap To 90%" onPress={() => handleSnapPress(2)} />
       </View>
+      {/* <FlatList
+        // extraData={this.state}
+        data={calls}
+        keyExtractor={(item) => {
+          return item.id.toString();
+        }}
+        renderItem={renderItem}
+      /> */}
     </SafeAreaView>
   );
 }

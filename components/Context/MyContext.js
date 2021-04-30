@@ -72,7 +72,7 @@ class AppProvider extends Component {
         .then(() => {
           API.get("api/me")
             .then((res) => {
-              // console.log(res.data);
+              console.log(res.data);
               this.setState({ user: res.data });
               this.setFeedPosts();
             })
@@ -118,7 +118,7 @@ class AppProvider extends Component {
       .then(() => {
         API.get("api/main-page")
           .then((res) => {
-            console.log(res.data);
+            // console.log(res.data);
             this.setState(() => {
               return { feedPosts: res.data };
             });

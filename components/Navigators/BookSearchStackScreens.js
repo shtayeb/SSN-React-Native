@@ -2,9 +2,9 @@ import React from "react";
 import { View, Text } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import Books from "../screens/main/Books";
-import BookCard from "../screens/main/BookCard";
-
+import Books from "../screens/main/BookSearch/Books";
+import BookCard from "../screens/main/BookSearch/BookCard";
+import BookCategories from "../screens/main/BookSearch/BookCategories";
 const Stack = createStackNavigator();
 const BookSearchStackScreens = () => {
   return (
@@ -17,17 +17,21 @@ const BookSearchStackScreens = () => {
       <Stack.Screen
         name="SingleBooks"
         component={Books}
-        options={{ headerShown: false }}
+        options={{ headerShown: true }}
+        options={({ navigation }) => ({
+          title: "Book Details",
+          headerStyle: {
+            backgroundColor: "#f9fafd",
+            shadowColor: "#f9fafd",
+            elevation: 2,
+          },
+        })}
       />
       <Stack.Screen
-        name="Test"
-        component={() => (
-          <View>
-            <Text>New Stack Screen</Text>
-          </View>
-        )}
+        name="BookCategories"
+        component={BookCategories}
         options={({ navigation }) => ({
-          title: "Single Book",
+          title: "All Books",
           headerStyle: {
             backgroundColor: "#f9fafd",
             shadowColor: "#f9fafd",

@@ -24,8 +24,9 @@ import like from "../assets/icons/like.png";
 import liked from "../assets/icons/like-1.png";
 import save from "../assets/icons/save.png";
 import saved from "../assets/icons/save-1.png";
+import { DateTime } from "luxon";
 
-const PostCard = ({ item }) => {
+const PostCard = ({ item, openComments }) => {
   // likeIcon = item.liked ? "heart" : "heart-outline";
   const [likeCount, setLikeCount] = useState(item.likes_count);
   const [commentCount, setCommentCount] = useState(item.comment_count);
@@ -36,6 +37,12 @@ const PostCard = ({ item }) => {
   const [isSaved, setIsSaved] = useState(item.saved_by_auth_user);
   let likeIcon = isLiked ? liked : like;
   let saveIcon = isSaved ? saved : save;
+
+  let date1 = DateTime.fromISO(item.created_at).diffNow().as("days");
+  // console.log(date1.toFixed());
+  // console.log(date1);
+  let diff = Math.abs(date1.toFixed());
+
   const likePressHandler = () => {
     if (isLiked) {
       //first decrease the count if errors happened revert back
@@ -163,7 +170,7 @@ const PostCard = ({ item }) => {
           <TouchableOpacity onPress={() => {}}>
             <UserName>{item.user.name}</UserName>
           </TouchableOpacity>
-          <PostTime>4 hours</PostTime>
+          <PostTime>{diff} days ago</PostTime>
         </UserInfoText>
       </UserInfo>
       <PostText>{item.caption}</PostText>
@@ -175,14 +182,13 @@ const PostCard = ({ item }) => {
         <PostTime style={{ padding: 6 }}>{saveCount} Saves</PostTime>
       </Container>
 
-      <InteractionWrapper>
+      <InteractionWrapper style={{ marginBottom: 20 }}>
         <Interaction onPress={likePressHandler}>
           {/* <Ionicons name={likeIcon} size={25} color={likeIconColor} /> */}
           <Image source={likeIcon} style={{ width: 25, height: 25 }} />
           <InteractionText>Like</InteractionText>
         </Interaction>
-        <Interaction>
-          {/* <Ionicons name="md-chatbubble-outline" size={25} /> */}
+        <Interaction onPress={() => openComments(item.id)}>
           <Image
             source={require("../assets/icons/comment-1.png")}
             style={{ width: 25, height: 25 }}
@@ -190,7 +196,6 @@ const PostCard = ({ item }) => {
           <InteractionText>Comment</InteractionText>
         </Interaction>
         <Interaction onPress={savePressHandler}>
-          {/* <Ionicons name={saveIcon} size={25} color={saveIconColor} /> */}
           <Image source={saveIcon} style={{ width: 25, height: 25 }} />
           <InteractionText>Save</InteractionText>
         </Interaction>

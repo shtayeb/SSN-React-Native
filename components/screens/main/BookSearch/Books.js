@@ -10,13 +10,11 @@ import {
   FlatList,
   Button,
 } from "react-native";
-import { RESOURCE_URL } from "../../constants/Variables";
+import { RESOURCE_URL } from "../../../constants/Variables";
 
 export default class ProductDetail extends Component {
   constructor(props) {
     super(props);
-    const { navigation } = this.props;
-    // const item = navigation.getParam;
   }
 
   clickEventListener() {
@@ -24,6 +22,9 @@ export default class ProductDetail extends Component {
   }
 
   render() {
+    // const { navigation } = this.props;
+    const item = this.props.route.params.item;
+    console.log(item);
     return (
       <View style={styles.container}>
         <ScrollView>
@@ -33,7 +34,7 @@ export default class ProductDetail extends Component {
               source={{ uri: RESOURCE_URL + item.cover }}
             />
             <Text style={styles.name}>{item.name}</Text>
-            <Text style={styles.price}>$ 12.22</Text>
+            <Text style={styles.price}>12k Downloads</Text>
             <Text style={styles.description}>{item.caption}</Text>
           </View>
           <View style={styles.starContainer}>

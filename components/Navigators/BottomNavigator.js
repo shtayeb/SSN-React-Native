@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, Image } from "react-native";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import Feed from "../screens/main/Feed/Feed";
-import Books from "../screens/main/Books";
+// import Books from "../screens/main/Books";
 import Dummy from "../screens/main/Dummy";
 import Explore from "../screens/main/Explore";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
@@ -44,7 +44,7 @@ export default function BottomNavigator({ route }) {
           ),
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Books"
         component={Books}
         options={{
@@ -52,6 +52,19 @@ export default function BottomNavigator({ route }) {
             // <FontAwesome name="book" size={22} color="#2863d0" />
             <Image
               source={require("../assets/icons/book.png")}
+              style={{ width: 25, height: 25 }}
+            />
+          ),
+        }}
+      /> */}
+      <Tab.Screen
+        name="Dummy"
+        component={Dummy}
+        options={{
+          tabBarIcon: ({ color }) => (
+            // <FontAwesome name="user" size={22} color="#2863d0" />
+            <Image
+              source={require("../assets/icons/plus.png")}
               style={{ width: 25, height: 25 }}
             />
           ),
@@ -70,19 +83,7 @@ export default function BottomNavigator({ route }) {
           ),
         }}
       />
-      <Tab.Screen
-        name="BookCard"
-        component={Dummy}
-        options={{
-          tabBarIcon: ({ color }) => (
-            // <FontAwesome name="user" size={22} color="#2863d0" />
-            <Image
-              source={require("../assets/icons/lock.png")}
-              style={{ width: 25, height: 25 }}
-            />
-          ),
-        }}
-      />
+
       <Tab.Screen
         name="Profile"
         component={DrawerNavigation}

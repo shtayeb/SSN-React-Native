@@ -10,8 +10,8 @@ import {
   FlatList,
   TextInput,
 } from "react-native";
-import API from "../../constants/API";
-import { RESOURCE_URL } from "../../constants/Variables";
+import API from "../../../constants/API";
+import { RESOURCE_URL } from "../../../constants/Variables";
 
 export default class Users extends Component {
   constructor(props) {
@@ -42,8 +42,8 @@ export default class Users extends Component {
   clickEventListener(item) {
     // Alert.alert(item.name);
     // console.log(item);
-    // this.props.navigation.navigate("Books", { item });
-    this.props.navigation.navigate("Test");
+    this.props.navigation.navigate("SingleBooks", { item });
+    // this.props.navigation.navigate("Test");
   }
 
   render() {
@@ -54,14 +54,14 @@ export default class Users extends Component {
           <TouchableOpacity>
             <Image
               style={[styles.icon, styles.inputIcon, styles.backButton]}
-              source={require("../../assets/al.png")}
+              source={require("../../../assets/al.png")}
               onPress={() => this.props.navigation.goBack()}
             />
           </TouchableOpacity>
           <View style={styles.inputContainer}>
             <Image
               style={[styles.icon, styles.inputIcon]}
-              source={require("../../assets/search.png")}
+              source={require("../../../assets/search.png")}
             />
             <TextInput
               style={styles.inputs}
@@ -72,11 +72,12 @@ export default class Users extends Component {
               underlineColorAndroid="transparent"
             />
           </View>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => this.props.navigation.navigate("BookCategories")}
+          >
             <Image
               style={[styles.icon, styles.inputIcon, styles.menuButton]}
-              source={require("../../assets/menu.png")}
-              onPress={() => this.props.navigation.goBack(null)}
+              source={require("../../../assets/icons/book.png")}
             />
           </TouchableOpacity>
         </View>
@@ -141,7 +142,7 @@ export default class Users extends Component {
               alignItems: "center",
             }}
           >
-            <Image source={require("../../assets/searchimg.png")} />
+            <Image source={require("../../../assets/searchimg.png")} />
             <Text>Search for the Books From Here</Text>
           </View>
         )}
