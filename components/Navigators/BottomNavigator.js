@@ -1,15 +1,13 @@
 import React from "react";
-import { StyleSheet, Text, View, Button } from "react-native";
+import { StyleSheet, Image } from "react-native";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import Feed from "../screens/main/Feed/Feed";
 import Books from "../screens/main/Books";
-import Profile from "../screens/main/Profile";
-import BookSearch from "../screens/main/BookSearch";
+import Dummy from "../screens/main/Dummy";
 import Explore from "../screens/main/Explore";
-import BookCard from "../screens/main/BookCard";
-import { FontAwesome } from "@expo/vector-icons";
+import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import DrawerNavigation from "./DrawerNavigation";
-
+import BookSearchStack from "./BookSearchStackScreens";
 const Tab = createMaterialBottomTabNavigator();
 
 export default function BottomNavigator({ route }) {
@@ -25,16 +23,24 @@ export default function BottomNavigator({ route }) {
         component={Feed}
         options={{
           tabBarIcon: ({ color }) => (
-            <FontAwesome name="user" size={22} color="#2863d0" />
+            // <FontAwesome name="user" size={22} color="#2863d0" />
+            <Image
+              source={require("../assets/icons/home.png")}
+              style={{ width: 25, height: 25 }}
+            />
           ),
         }}
       />
       <Tab.Screen
         name="BookSearch"
-        component={BookSearch}
+        component={BookSearchStack}
         options={{
           tabBarIcon: ({ color }) => (
-            <FontAwesome name="search" size={22} color="#2863d0" />
+            // <FontAwesome name="search" size={22} color="#2863d0" />
+            <Image
+              source={require("../assets/icons/search.png")}
+              style={{ width: 25, height: 25 }}
+            />
           ),
         }}
       />
@@ -43,7 +49,11 @@ export default function BottomNavigator({ route }) {
         component={Books}
         options={{
           tabBarIcon: ({ color }) => (
-            <FontAwesome name="book" size={22} color="#2863d0" />
+            // <FontAwesome name="book" size={22} color="#2863d0" />
+            <Image
+              source={require("../assets/icons/book.png")}
+              style={{ width: 25, height: 25 }}
+            />
           ),
         }}
       />
@@ -52,16 +62,24 @@ export default function BottomNavigator({ route }) {
         component={Explore}
         options={{
           tabBarIcon: ({ color }) => (
-            <FontAwesome name="plus" size={22} color="#2863d0" />
+            // <FontAwesome name="plus" size={22} color="#2863d0" />
+            <Image
+              source={require("../assets/icons/grid1.png")}
+              style={{ width: 25, height: 25 }}
+            />
           ),
         }}
       />
       <Tab.Screen
         name="BookCard"
-        component={BookCard}
+        component={Dummy}
         options={{
           tabBarIcon: ({ color }) => (
-            <FontAwesome name="user" size={22} color="#2863d0" />
+            // <FontAwesome name="user" size={22} color="#2863d0" />
+            <Image
+              source={require("../assets/icons/lock.png")}
+              style={{ width: 25, height: 25 }}
+            />
           ),
         }}
       />
@@ -70,7 +88,11 @@ export default function BottomNavigator({ route }) {
         component={DrawerNavigation}
         options={{
           tabBarIcon: ({ color }) => (
-            <FontAwesome name="user" size={22} color="#2863d0" />
+            // <FontAwesome name="user" size={22} color="#2863d0" />
+            <Image
+              source={require("../assets/icons/user.png")}
+              style={{ width: 25, height: 25 }}
+            />
           ),
         }}
       />

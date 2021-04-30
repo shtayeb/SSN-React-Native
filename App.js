@@ -5,7 +5,7 @@ import * as Font from "expo-font";
 import AppNavigator from "./components/Navigators/Navigator";
 import AppLoading from "expo-app-loading";
 import { AppProvider } from "./components/Context/MyContext";
-
+import { FontAwesome } from "@expo/vector-icons";
 export default class App extends React.Component {
   state = {
     isFontLoaded: false,
@@ -16,6 +16,7 @@ export default class App extends React.Component {
       Medium: require("./assets/fonts/Montserrat-Medium.ttf"),
       Regular: require("./assets/fonts/Montserrat-Regular.ttf"),
     });
+    await Font.loadAsync(FontAwesome.font);
     this.setState({ isFontLoaded: true });
   }
   render() {

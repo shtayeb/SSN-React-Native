@@ -27,6 +27,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     color: "#fff",
-    fontFamily: "Regular",
+    // fontFamily: "Medium",
   },
 });

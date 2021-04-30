@@ -11,11 +11,11 @@ import {
 import { ScrollView } from "react-native-gesture-handler";
 // import { Entypo } from "@expo/vector-icons";
 // import { PROFILE_RESOURCE, RESOURCE_URL } from "../../constants/Variables";
-import { AppConsumer } from "../../Context/MyContext";
-import { AppContext } from "../../Context/MyContext";
+import { AppConsumer } from "../../../Context/MyContext";
+import { AppContext } from "../../../Context/MyContext";
 // import PostCard from "../../components/PostCard";
-import ExploreCard from "../../components/ExploreCard";
-import Header from "../../components/Header";
+import ExploreCard from "../../../components/ExploreCard";
+import Header from "../../../components/Header";
 export default function Profile({ navigation }) {
   const [collectionSelected, setCollectionSelected] = useState(true);
   const contextValue = React.useContext(AppContext);
@@ -106,32 +106,25 @@ export default function Profile({ navigation }) {
             </TouchableOpacity>
           </View>
           <View style={styles.userBtnWrapper}>
-            <TouchableOpacity style={styles.userBtn}>
-              <Text style={styles.userBtnTxt}>Message</Text>
+            <TouchableOpacity
+              style={styles.userBtn}
+              onPress={() => navigation.navigate("Followings")}
+            >
+              <Text style={styles.userBtnTxt}>Followings</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.userBtn} onPress={() => {}}>
-              <Text style={styles.userBtnTxt}>Follow</Text>
+            <TouchableOpacity
+              style={styles.userBtn}
+              onPress={() => {
+                navigation.navigate("Followers");
+              }}
+            >
+              <Text style={styles.userBtnTxt}>Followers</Text>
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.userBtn} onPress={() => {}}>
               <Text style={styles.userBtnTxt}>Logout</Text>
             </TouchableOpacity>
           </View>
-
-          {/* <View style={styles.userInfoWrapper}>
-          <View style={styles.userInfoItem}>
-            <Text style={styles.userInfoTitle}>{stats.postCount}</Text>
-            <Text style={styles.userInfoSubTitle}>Posts</Text>
-          </View>
-          <View style={styles.userInfoItem}>
-            <Text style={styles.userInfoTitle}>{stats.followersCount}</Text>
-            <Text style={styles.userInfoSubTitle}>Followers</Text>
-          </View>
-          <View style={styles.userInfoItem}>
-            <Text style={styles.userInfoTitle}>{stats.followingsCount}</Text>
-            <Text style={styles.userInfoSubTitle}>Following</Text>
-          </View>
-        </View> */}
         </ScrollView>
       </SafeAreaView>
     );

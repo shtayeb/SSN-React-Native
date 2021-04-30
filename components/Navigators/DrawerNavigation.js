@@ -1,7 +1,10 @@
 import React from "react";
 import { View, Button } from "react-native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import Profile from "../screens/main/Profile";
+import Profile from "../screens/main/Profile/Profile";
+import EditProfile from "../screens/main/Profile/EditProfile";
+import Followers from "../screens/main/Profile/Followers";
+import Followings from "../screens/main/Profile/Followings";
 
 export default function DrawerNavigation() {
   //
@@ -34,6 +37,9 @@ export default function DrawerNavigation() {
       <Drawer.Screen name="Profile" component={Profile} />
       <Drawer.Screen name="Notifications" component={NotificationsScreen} />
       <Drawer.Screen name="HomeScreen" component={HomeScreen} />
+      <Drawer.Screen name="EditProfile" component={EditProfile} />
+      <Drawer.Screen name="Followers" component={Followers} />
+      <Drawer.Screen name="Followings" component={Followings} />
     </Drawer.Navigator>
   );
 }

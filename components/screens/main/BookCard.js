@@ -41,8 +41,9 @@ export default class Users extends Component {
 
   clickEventListener(item) {
     // Alert.alert(item.name);
-    console.log(item);
-    this.props.navigation.navigate("Books", { item });
+    // console.log(item);
+    // this.props.navigation.navigate("Books", { item });
+    this.props.navigation.navigate("Test");
   }
 
   render() {

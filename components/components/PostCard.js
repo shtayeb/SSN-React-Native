@@ -1,7 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-// import Ionicons from "react-native-vector-icons/Ionicons";
-import Ionicons from "@expo/vector-icons/Ionicons";
-// import { Ionicons } from "react-native-vector-icons";
 import { RESOURCE_URL } from "../constants/Variables";
 import {
   Card,
@@ -21,6 +18,12 @@ import {
 
 import { TouchableOpacity } from "react-native-gesture-handler";
 import API from "../constants/API";
+import { Image } from "react-native";
+
+import like from "../assets/icons/like.png";
+import liked from "../assets/icons/like-1.png";
+import save from "../assets/icons/save.png";
+import saved from "../assets/icons/save-1.png";
 
 const PostCard = ({ item }) => {
   // likeIcon = item.liked ? "heart" : "heart-outline";
@@ -31,27 +34,8 @@ const PostCard = ({ item }) => {
 
   // for the save functionality
   const [isSaved, setIsSaved] = useState(item.saved_by_auth_user);
-
-  let likeIcon = isLiked ? "heart" : "heart-outline";
-  let likeIconColor = isLiked ? "#2e64e5" : "#333";
-
-  let saveIcon = isSaved ? "bookmark" : "bookmark-outline";
-  let saveIconColor = isSaved ? "#2e64e5" : "#333";
-  // if (item.likes_count == 1) {
-  //   likeText = "Like";
-  // } else if (item.likes_count > 1) {
-  //   likeText = "Likes";
-  // } else {
-  //   likeText = "Like";
-  // }
-
-  // if (item.comment_count == 1) {
-  //   commentText = "1 Comment";
-  // } else if (item.comment_count > 1) {
-  //   commentText = item.comment_count + " Comments";
-  // } else {
-  //   commentText = "Comment";
-  // }
+  let likeIcon = isLiked ? liked : like;
+  let saveIcon = isSaved ? saved : save;
   const likePressHandler = () => {
     if (isLiked) {
       //first decrease the count if errors happened revert back
@@ -193,15 +177,21 @@ const PostCard = ({ item }) => {
 
       <InteractionWrapper>
         <Interaction onPress={likePressHandler}>
-          <Ionicons name={likeIcon} size={25} color={likeIconColor} />
+          {/* <Ionicons name={likeIcon} size={25} color={likeIconColor} /> */}
+          <Image source={likeIcon} style={{ width: 25, height: 25 }} />
           <InteractionText>Like</InteractionText>
         </Interaction>
         <Interaction>
-          <Ionicons name="md-chatbubble-outline" size={25} />
+          {/* <Ionicons name="md-chatbubble-outline" size={25} /> */}
+          <Image
+            source={require("../assets/icons/comment-1.png")}
+            style={{ width: 25, height: 25 }}
+          />
           <InteractionText>Comment</InteractionText>
         </Interaction>
         <Interaction onPress={savePressHandler}>
-          <Ionicons name={saveIcon} size={25} color={saveIconColor} />
+          {/* <Ionicons name={saveIcon} size={25} color={saveIconColor} /> */}
+          <Image source={saveIcon} style={{ width: 25, height: 25 }} />
           <InteractionText>Save</InteractionText>
         </Interaction>
         {/* {user.uid == item.userId ? (
