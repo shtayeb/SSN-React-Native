@@ -26,7 +26,7 @@ import save from "../assets/icons/save.png";
 import saved from "../assets/icons/save-1.png";
 import { DateTime } from "luxon";
 
-const PostCard = ({ item, openComments }) => {
+const PostCard = ({ item, openComments, gotoProfile }) => {
   // likeIcon = item.liked ? "heart" : "heart-outline";
   const [likeCount, setLikeCount] = useState(item.likes_count);
   const [commentCount, setCommentCount] = useState(item.comment_count);
@@ -165,23 +165,25 @@ const PostCard = ({ item, openComments }) => {
   return (
     <Card key={item.id}>
       <UserInfo>
-        <UserImg source={{ uri: RESOURCE_URL + item.user.profile.image }} />
+        <TouchableOpacity onPress={() => gotoProfile(item)}>
+          <UserImg source={{ uri: RESOURCE_URL + item.user.profile.image }} />
+        </TouchableOpacity>
         <UserInfoText>
-          <TouchableOpacity onPress={() => {}}>
+          <TouchableOpacity onPress={() => gotoProfile(item)}>
             <UserName>{item.user.name}</UserName>
           </TouchableOpacity>
           <PostTime>{diff} days ago</PostTime>
         </UserInfoText>
       </UserInfo>
+
       <PostText>{item.caption}</PostText>
       <PostImg source={{ uri: RESOURCE_URL + item.img }} />
-
-      <Container style={{ flexDirection: "row" }}>
+      <Container style={{ flexDirection: "row", margin: 12 }}>
         <PostTime style={{ padding: 6 }}>{likeCount} Likes</PostTime>
         <PostTime style={{ padding: 6 }}>{commentCount} Comments</PostTime>
         <PostTime style={{ padding: 6 }}>{saveCount} Saves</PostTime>
       </Container>
-
+      <Divider />
       <InteractionWrapper style={{ marginBottom: 20 }}>
         <Interaction onPress={likePressHandler}>
           {/* <Ionicons name={likeIcon} size={25} color={likeIconColor} /> */}

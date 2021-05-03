@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { windowHeight, windowWidth } from "../../constants/Dimensions";
 
-import { FontAwesome } from "@expo/vector-icons";
+// import { FontAwesome } from "@expo/vector-icons";
 
 const SocialButtons = ({
   buttonTitle,
@@ -17,12 +17,12 @@ const SocialButtons = ({
       style={[styles.buttonContainer, { backgroundColor: bgcolor }]}
     >
       <View style={styles.iconWrapper}>
-        <FontAwesome
+        {/* <FontAwesome
           style={styles.icon}
           name={btnType}
           size={22}
           color={color}
-        />
+        /> */}
       </View>
       <View style={styles.btnTextWrapper}>
         <Text style={(styles.buttonText, { color: color })}>{buttonTitle}</Text>

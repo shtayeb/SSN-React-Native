@@ -1,6 +1,6 @@
 import React from "react";
-import { StyleSheet, TextInput, View } from "react-native";
-import { AntDesign } from "@expo/vector-icons";
+import { StyleSheet, TextInput, View, Image } from "react-native";
+// import { AntDesign } from "@expo/vector-icons";
 import { windowHeight, windowWidth } from "../../constants/Dimensions";
 export default function FormInput({
   labelValue,
@@ -11,7 +11,18 @@ export default function FormInput({
   return (
     <View style={styles.inputContainer}>
       <View style={styles.iconStyle}>
-        <AntDesign name={iconType} color="#666" />
+        {/* <AntDesign name={iconType} color="#666" /> */}
+        {iconType === "user" ? (
+          <Image
+            source={require("../../assets/icons/user.png")}
+            style={{ width: 25, height: 25 }}
+          />
+        ) : (
+          <Image
+            source={require("../../assets/icons/lock.png")}
+            style={{ width: 25, height: 25 }}
+          />
+        )}
       </View>
       <TextInput
         style={styles.input}

@@ -26,7 +26,7 @@ class AppProvider extends Component {
     this.isLoggedIn();
   }
 
-  logIn = async (email, password) => {
+  logIn = async (email, password, changeLoading) => {
     API.get("sanctum/csrf-cookie")
       .then(() => {
         API.post("api/auth/login", { email: email, password: password })
@@ -40,7 +40,7 @@ class AppProvider extends Component {
             // );
             this.setState({ user: res.data.data.user });
             this.setState({ loggedIn: true });
-            return "success";
+            this.setFeedPosts();
           })
           .catch((err) => {
             console.log("not the response");
@@ -51,7 +51,7 @@ class AppProvider extends Component {
               "Check the Email and Password",
               [{ text: "Sorry", style: "cancel" }]
             );
-            return "failed";
+            changeLoading();
           });
       })
       .catch((err) => {
@@ -64,7 +64,7 @@ class AppProvider extends Component {
     //check the local storage for the token
     // const token = localStorage.getItem("AuthToken");
     const token = await AsyncStorage.getItem("@AuthToken");
-    // console.log(token);
+    console.log(token);
 
     if (token) {
       this.setState({ loggedIn: true });
@@ -89,26 +89,29 @@ class AppProvider extends Component {
     }
   };
 
-  logOut = () => {
+  logOut = async () => {
     // call to api/auth/logout to delete token from database
+    this.setState({ user: {} });
+    this.setState(() => false);
+    console.log("out");
+    // await AsyncStorage.removeItem("@AuthToken");
     API.get("sanctum/csrf-cookie")
       .then(() => {
         API.post("api/auth/logout")
-          .then((res) => {
-            localStorage.removeItem("AuthToken");
-            this.setState({ user: {} });
+          .then(async (res) => {
+            console.log(res.data);
+            await AsyncStorage.removeItem("@AuthToken");
             this.setState({ loggedIn: false });
-            return "success";
+            this.setState({ user: {} });
+            // return "success";
           })
           .catch((err) => {
             console.log("not the response");
             console.log(err);
-            return "failed";
           });
       })
       .catch((err) => {
         console.log(err);
-        return "failed";
       });
   };
 
@@ -151,7 +154,7 @@ class AppProvider extends Component {
             this.setState(() => {
               return { posts: res.data.posts };
             });
-            console.log(this.state.posts);
+            // console.log(this.state.posts);
           })
           .catch((err) => {
             console.log("not the response");
@@ -187,6 +190,14 @@ class AppProvider extends Component {
       });
   };
 
+  // the functoin to update the profile values in the context
+  updateProfileDataContext = (data) => {
+    //update the selected key value pairs
+    this.setState(() => {
+      return { profile: { ...this.state.profile, ...data } };
+    });
+    // console.log(this.state.profile);
+  };
   //   The Functions in the context
   __getProfile = (id) => {
     const product = this.state.products.find((item) => item.id === id);
@@ -211,6 +222,7 @@ class AppProvider extends Component {
           logIn: this.logIn,
           getProfile: this.getProfile,
           getExplore: this.getExplore,
+          updateProfileDataContext: this.updateProfileDataContext,
         }}
       >
         {this.props.children}

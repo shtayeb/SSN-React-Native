@@ -11,7 +11,7 @@ import API from "../../../constants/API";
 
 import { RESOURCE_URL } from "../../../constants/Variables";
 
-const NotFollowing = (nfp) => {
+const NotFollowing = ({ nfp, gotoProfile }) => {
   const RenderItem = ({ item }) => {
     // console.log(item);
     const [isFollowed, setIsFollowed] = useState(false);
@@ -32,7 +32,7 @@ const NotFollowing = (nfp) => {
 
     return (
       <View style={styles.row}>
-        <TouchableOpacity onPress={() => {}}>
+        <TouchableOpacity onPress={() => gotoProfile(item)}>
           <Image
             source={{
               uri:

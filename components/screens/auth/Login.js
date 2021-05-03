@@ -7,6 +7,7 @@ import {
   Image,
   Alert,
   ActivityIndicator,
+  SafeAreaView,
 } from "react-native";
 
 import API from "../../constants/API";
@@ -15,6 +16,7 @@ import FormButton from "../../components/Form/FormButton";
 import SocialButtons from "../../components/Form/SocialButtons";
 import FormInput from "../../components/Form/FormInput";
 import { AppConsumer } from "../../Context/MyContext";
+import { ScrollView } from "react-native-gesture-handler";
 
 export default class Login extends Component {
   constructor(props) {
@@ -28,24 +30,40 @@ export default class Login extends Component {
     this.onSignIn = this.onSignIn.bind(this);
   }
 
+  changeLoading = () => {
+    this.setState({ loading: false });
+  };
+
   onSignIn(logIn) {
     // const data = { email: this.state.email, password: this.state.password };
     // this.props.navigation.navigate("BottomNavigator");
     this.setState({ loading: true }, async () => {
-      const res = await logIn(this.state.email, this.state.password);
+      const res = await logIn(
+        this.state.email,
+        this.state.password,
+        this.changeLoading
+      );
       // console.log(res);
-      if (res === "success") {
-        this.props.navigation.navigate("BottomNavigator");
-      }
-      if (res === "failed") {
-        this.setState({ loading: false });
-      }
+      // // this.setState({ loading: false });
+      // if (res === "success") {
+      //   this.props.navigation.navigate("BottomNavigator");
+      // }
+      // if (res === "failed") {
+      //   this.setState({ loading: false });
+      // }
     });
   }
 
   render() {
     return (
-      <View style={styles.container}>
+      // <View style={styles.container}>
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={{
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
         <Image
           source={require("../../assets/images/logo.png")}
           style={styles.logo}
@@ -112,7 +130,8 @@ export default class Login extends Component {
             Dont Have an Account Create Here..
           </Text>
         </TouchableOpacity>
-      </View>
+      </ScrollView>
+      // </View>
     );
   }
 }
@@ -121,8 +140,8 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "#f9fafd",
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    // justifyContent: "center",
+    // alignItems: "center",
     padding: 20,
   },
   logo: {

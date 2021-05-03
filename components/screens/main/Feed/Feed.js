@@ -121,96 +121,96 @@ export default function Feed({ navigation }) {
     setCalls([...calls, newComment]);
     setCBody("");
   };
+
+  const gotoProfile = (item) => {
+    // console.log("Went to profile");
+    const user_id = item.user_id;
+    const username = item.username;
+    navigation.navigate("User's Profile", { item });
+  };
   return (
     <AppConsumer>
       {(value) => (
         <Container>
-          <SafeAreaView>
-            <FlatList
-              data={value.feedPosts.posts}
-              renderItem={({ item }) => (
-                <PostCard
-                  openComments={handlePresentModalPress}
-                  item={item}
-                  onDelete={() => {}}
-                  onPress={() =>
-                    navigation.navigate("Profile", { userId: item.userId })
-                  }
+          {/* <SafeAreaView> */}
+          <FlatList
+            data={value.feedPosts.posts}
+            renderItem={({ item }) => (
+              <PostCard
+                openComments={handlePresentModalPress}
+                item={item}
+                gotoProfile={gotoProfile}
+                onDelete={() => {}}
+              />
+            )}
+            keyExtractor={(item) => item.id.toString()}
+            ListHeaderComponent={Stories(value.feedPosts.stories)}
+            ListFooterComponent={() => (
+              <NotFollowing
+                nfp={value.feedPosts.notFolllowingProfiles}
+                gotoProfile={gotoProfile}
+              />
+            )}
+            showsVerticalScrollIndicator={false}
+          />
+          {/* the bottom sheet */}
+          <BottomSheetModalProvider>
+            <View style={styles.container}>
+              <BottomSheetModal
+                ref={bottomSheetModalRef}
+                index={1}
+                snapPoints={snapPoints}
+                onChange={handleSheetChanges}
+              >
+                <BottomSheetFlatList
+                  data={calls}
+                  keyExtractor={(item) => {
+                    return item.id.toString();
+                  }}
+                  renderItem={renderItem}
+                  contentContainerStyle={styles.contentContainer}
                 />
-              )}
-              keyExtractor={(item) => item.id.toString()}
-              ListHeaderComponent={Stories(value.feedPosts.stories)}
-              ListFooterComponent={() =>
-                NotFollowing(value.feedPosts.notFolllowingProfiles)
-              }
-              showsVerticalScrollIndicator={false}
-            />
-            {/* the bottom sheet */}
-            <BottomSheetModalProvider>
-              <View style={styles.container}>
-                <BottomSheetModal
-                  ref={bottomSheetModalRef}
-                  index={1}
-                  snapPoints={snapPoints}
-                  onChange={handleSheetChanges}
-                >
-                  <BottomSheetFlatList
-                    data={calls}
-                    keyExtractor={(item) => {
-                      return item.id.toString();
-                    }}
-                    renderItem={renderItem}
-                    contentContainerStyle={styles.contentContainer}
-                  />
-                  {/* the comment box */}
-                  <View style={styles.formContent}>
-                    <TouchableOpacity>
-                      <Image
-                        style={[
-                          styles.icon,
-                          styles.inputIcon,
-                          styles.backButton,
-                        ]}
-                        source={require("../../../assets/al.png")}
-                        onPress={() => handleDismiss}
-                      />
-                    </TouchableOpacity>
-                    <View style={styles.inputContainer}>
-                      <Image
-                        style={[styles.icon, styles.inputIcon]}
-                        source={require("../../../assets/icons/comment-1.png")}
-                      />
-                      <TextInput
-                        style={styles.inputs}
-                        labelValue={cBody}
-                        onChangeText={(body) => {
-                          setCBody(body);
-                        }}
-                        placeholder="Enter Your Comment Here !"
-                        underlineColorAndroid="transparent"
-                        multiline={true}
-                        numberOfLines={4}
-                      />
-                    </View>
-                    <TouchableOpacity
-                      onPress={() => handleCommentAddPress(value.user)}
-                    >
-                      <Image
-                        style={[
-                          styles.icon,
-                          styles.inputIcon,
-                          styles.menuButton,
-                        ]}
-                        source={require("../../../assets/icons/plus.png")}
-                      />
-                    </TouchableOpacity>
+                {/* the comment box */}
+                <View style={styles.formContent}>
+                  <TouchableOpacity>
+                    <Image
+                      style={[styles.icon, styles.inputIcon, styles.backButton]}
+                      source={require("../../../assets/al.png")}
+                      onPress={() => handleDismiss}
+                    />
+                  </TouchableOpacity>
+                  <View style={styles.inputContainer}>
+                    <Image
+                      style={[styles.icon, styles.inputIcon]}
+                      source={require("../../../assets/icons/comment-1.png")}
+                    />
+                    <TextInput
+                      style={styles.inputs}
+                      labelValue={cBody}
+                      onChangeText={(body) => {
+                        setCBody(body);
+                      }}
+                      placeholder="Enter Your Comment Here !"
+                      underlineColorAndroid="transparent"
+                      multiline={true}
+                      numberOfLines={4}
+                    />
                   </View>
-                  {/* End of the comment box */}
-                </BottomSheetModal>
-              </View>
-            </BottomSheetModalProvider>
-            {/* the bottom sheet */}
-          </SafeAreaView>
+                  <TouchableOpacity
+                    onPress={() => handleCommentAddPress(value.user)}
+                  >
+                    <Image
+                      style={[styles.icon, styles.inputIcon, styles.menuButton]}
+                      source={require("../../../assets/icons/plus.png")}
+                    />
+                  </TouchableOpacity>
+                </View>
+                {/* End of the comment box */}
+              </BottomSheetModal>
+            </View>
+          </BottomSheetModalProvider>
+          {/* the bottom sheet */}
+          {/* </SafeAreaView> */}
         </Container>
       )}
     </AppConsumer>

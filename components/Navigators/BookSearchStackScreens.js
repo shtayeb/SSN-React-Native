@@ -5,6 +5,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import Books from "../screens/main/BookSearch/Books";
 import BookCard from "../screens/main/BookSearch/BookCard";
 import BookCategories from "../screens/main/BookSearch/BookCategories";
+import CategoryList from "../screens/main/BookSearch/CategoryList";
 const Stack = createStackNavigator();
 const BookSearchStackScreens = () => {
   return (
@@ -32,6 +33,19 @@ const BookSearchStackScreens = () => {
         component={BookCategories}
         options={({ navigation }) => ({
           title: "All Books",
+          headerStyle: {
+            backgroundColor: "#f9fafd",
+            shadowColor: "#f9fafd",
+            elevation: 0,
+          },
+        })}
+        options={{ headerShown: true }}
+      />
+      <Stack.Screen
+        name="CategoryList"
+        component={CategoryList}
+        options={({ navigation }) => ({
+          title: "Books",
           headerStyle: {
             backgroundColor: "#f9fafd",
             shadowColor: "#f9fafd",

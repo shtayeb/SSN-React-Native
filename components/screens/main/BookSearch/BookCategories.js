@@ -19,33 +19,33 @@ export default class Craigslist extends Component {
       userSelected: [],
       data: [
         {
-          id: 1,
-          name: "Comunity",
+          id: "1",
+          name: "Information Technology",
           image: "https://img.icons8.com/clouds/100/000000/groups.png",
           count: 124.711,
         },
         {
-          id: 2,
-          name: "Housing",
+          id: "2",
+          name: "Personal Development",
           image: "https://img.icons8.com/color/100/000000/real-estate.png",
           count: 234.722,
         },
         {
-          id: 3,
-          name: "Jobs",
+          id: "3",
+          name: "Islamic Studies",
           image:
             "https://img.icons8.com/color/100/000000/find-matching-job.png",
           count: 324.723,
         },
         {
-          id: 4,
-          name: "Personal",
+          id: "4",
+          name: "Politics",
           image: "https://img.icons8.com/clouds/100/000000/employee-card.png",
           count: 154.573,
         },
         {
-          id: 5,
-          name: "For sale",
+          id: "5",
+          name: "General Information",
           image: "https://img.icons8.com/color/100/000000/land-sales.png",
           count: 124.678,
         },
@@ -53,8 +53,10 @@ export default class Craigslist extends Component {
     };
   }
 
-  clickEventListener = (item) => {
-    Alert.alert("Message", "Item clicked. " + item.name);
+  clickEventListener = ({ id }) => {
+    // Alert.alert("Message", "Item clicked. " + item.name);
+    this.props.navigation.navigate("CategoryList", { id });
+    // console.log(item);
   };
 
   render() {
@@ -78,7 +80,7 @@ export default class Craigslist extends Component {
                 <Image style={styles.image} source={{ uri: item.image }} />
                 <View style={styles.cardContent}>
                   <Text style={styles.name}>{item.name}</Text>
-                  <Text style={styles.count}>{item.count}</Text>
+                  {/* <Text style={styles.count}>{item.count}</Text> */}
                   <TouchableOpacity
                     style={styles.followButton}
                     onPress={() => this.clickEventListener(item)}
@@ -128,7 +130,8 @@ const styles = StyleSheet.create({
 
     marginLeft: 20,
     marginRight: 20,
-    marginTop: 20,
+    marginTop: 10,
+    marginBottom: 10,
     backgroundColor: "white",
     padding: 10,
     flexDirection: "row",
@@ -136,16 +139,16 @@ const styles = StyleSheet.create({
   },
 
   name: {
-    fontSize: 18,
+    fontSize: 16,
     flex: 1,
-    alignSelf: "center",
+    // alignSelf: "center",
     color: "#3399ff",
     fontWeight: "bold",
   },
   count: {
     fontSize: 14,
     flex: 1,
-    alignSelf: "center",
+    // alignSelf: "center",
     color: "#6666ff",
   },
   followButton: {
@@ -159,10 +162,10 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     backgroundColor: "white",
     borderWidth: 1,
-    borderColor: "#dcdcdc",
+    // borderColor: "#dcdcdc",
   },
   followButtonText: {
-    color: "#dcdcdc",
+    // color: "#dcdcdc",
     fontSize: 12,
   },
 });

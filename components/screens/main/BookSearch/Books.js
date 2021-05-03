@@ -24,7 +24,7 @@ export default class ProductDetail extends Component {
   render() {
     // const { navigation } = this.props;
     const item = this.props.route.params.item;
-    console.log(item);
+    // console.log(item);
     return (
       <View style={styles.container}>
         <ScrollView>
@@ -109,7 +109,7 @@ export default class ProductDetail extends Component {
               style={styles.shareButton}
               onPress={() => this.clickEventListener()}
             >
-              <Text style={styles.shareButtonText}>Add To Cart</Text>
+              <Text style={styles.shareButtonText}>Download</Text>
             </TouchableOpacity>
           </View>
         </ScrollView>

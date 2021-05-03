@@ -8,6 +8,7 @@ import Explore from "../screens/main/Explore";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import DrawerNavigation from "./DrawerNavigation";
 import BookSearchStack from "./BookSearchStackScreens";
+import FeedScreenStack from "./FeedScreenStack";
 const Tab = createMaterialBottomTabNavigator();
 
 export default function BottomNavigator({ route }) {
@@ -20,7 +21,7 @@ export default function BottomNavigator({ route }) {
     >
       <Tab.Screen
         name="Feed"
-        component={Feed}
+        component={FeedScreenStack}
         options={{
           tabBarIcon: ({ color }) => (
             // <FontAwesome name="user" size={22} color="#2863d0" />

@@ -4,14 +4,15 @@ export const Container = styled.View`
   flex: 1;
   align-items: center;
   background-color: #fff;
-  padding: 10px 0px;
+  /*padding: 10px 0px;*/
 `;
 
 export const Card = styled.View`
-  background-color: #f8f8f8;
+  background-color: #fff;
   width: 100%;
   margin-bottom: 20px;
   border-radius: 10px;
+  elevation: 5;
 `;
 
 export const UserInfo = styled.View`
@@ -53,7 +54,7 @@ export const PostText = styled.Text`
 
 export const PostImg = styled.Image`
   width: 100%;
-  height: 250px;
+  height: 410px;
   /* margin-top: 15px; */
 `;
 
@@ -68,7 +69,7 @@ export const Divider = styled.View`
 export const InteractionWrapper = styled.View`
   flex-direction: row;
   justify-content: space-around;
-  padding: 15px;
+  margin-top: 10px;
 `;
 
 export const Interaction = styled.TouchableOpacity`
