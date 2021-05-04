@@ -17,7 +17,7 @@ const FeedProfile = (props) => {
   const getProfile = () => {
     API.get("api/profile/" + item.user_id)
       .then((res) => {
-        // console.log(res.data);
+        // console.log(res.data.profile);
         setData(() => res.data);
         // this.setState(() => {
         //   return { stats: res.data.stats[0] };
@@ -40,7 +40,7 @@ const FeedProfile = (props) => {
           ListHeader={() => (
             <ProfileListHeader
               stats={data.stats[0]}
-              profile={data.profile}
+              profile={data.profile[0]}
               navigation={props.navigation}
             />
           )}

@@ -7,18 +7,110 @@ import {
   Image,
   Alert,
   ScrollView,
-  FlatList,
-  Button,
+  Linking,
 } from "react-native";
-import { RESOURCE_URL } from "../../../constants/Variables";
+import API from "../../../constants/API";
+import { API_URL, RESOURCE_URL } from "../../../constants/Variables";
+import { downloadToFolder } from "expo-file-dl";
+
+import * as Permissions from "expo-permissions";
+import * as Notifications from "expo-notifications";
+import {
+  AndroidImportance,
+  AndroidNotificationVisibility,
+  NotificationChannel,
+  NotificationChannelInput,
+  NotificationContentInput,
+} from "expo-notifications";
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
+
+const channelId = "DownloadInfo";
 
 export default class ProductDetail extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      downloadProgress: "0%",
+    };
+  }
+  componentDidMount() {
+    // this.getMediaLibraryPermissions();
+    // this.getNotificationPermissions();
+    this.setNotificationChannel();
   }
 
-  clickEventListener() {
-    Alert.alert("Success", "Product has beed added to cart");
+  downloadProgressUpdater = ({
+    totalBytesWritten,
+    totalBytesExpectedToWrite,
+  }: {
+    totalBytesWritten: number,
+    totalBytesExpectedToWrite: number,
+  }) => {
+    const pctg = 100 * (totalBytesWritten / totalBytesExpectedToWrite);
+    // setDownloadProgress(`${pctg.toFixed(0)}%`);
+    this.setState({ downloadProgress: `${pctg.toFixed(0)}%` });
+  };
+
+  async setNotificationChannel() {
+    const loadingChannel: NotificationChannel | null = await Notifications.getNotificationChannelAsync(
+      channelId
+    );
+
+    // if we didn't find a notification channel set how we like it, then we create one
+    if (loadingChannel == null) {
+      const channelOptions: NotificationChannelInput = {
+        name: channelId,
+        importance: AndroidImportance.HIGH,
+        lockscreenVisibility: AndroidNotificationVisibility.PUBLIC,
+        sound: "default",
+        vibrationPattern: [250],
+        enableVibrate: true,
+      };
+      await Notifications.setNotificationChannelAsync(
+        channelId,
+        channelOptions
+      );
+    }
+  }
+  async getMediaLibraryPermissions() {
+    await Permissions.askAsync(Permissions.MEDIA_LIBRARY);
+  }
+  async getNotificationPermissions() {
+    await Permissions.askAsync(Permissions.NOTIFICATIONS);
+  }
+  async clickEventListener(pdf) {
+    this.getNotificationPermissions();
+    this.getMediaLibraryPermissions();
+
+    let uri = API_URL + "api/storage_get/" + pdf;
+    // console.log(uri);
+    // Alert.alert("Downloading", this.state.downloadProgress);
+    // Linking.openURL(RESOURCE_URL + pdf);
+    // let pdffile;
+    // console.log(pdf);
+    // API.get("/api/storage_get/" + pdf)
+    //   .then((res) => {
+    //     console.log(res);
+    //     pdffile = res.data;
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
+    // let uri = API_URL + "/api/storage_get/" + pdf;
+    let filename = pdf.split("/")[2];
+    let folder = "Danesh Books";
+    // let channelId = "Danesh";
+    // await downloadToFolder(uri, filename, folder);
+    await downloadToFolder(uri, filename, folder, channelId, {
+      downloadProgressCallback: this.downloadProgressUpdater,
+    });
   }
 
   render() {
@@ -100,14 +192,14 @@ export default class ProductDetail extends Component {
               <Text>L</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.btnSize}>
-              <Text>XL</Text>
+              <Text>{this.state.downloadProgress}</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.separator}></View>
           <View style={styles.addToCarContainer}>
             <TouchableOpacity
               style={styles.shareButton}
-              onPress={() => this.clickEventListener()}
+              onPress={() => this.clickEventListener(item.pdf)}
             >
               <Text style={styles.shareButtonText}>Download</Text>
             </TouchableOpacity>

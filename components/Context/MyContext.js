@@ -144,9 +144,9 @@ class AppProvider extends Component {
       .then(() => {
         API.get("api/profile/" + this.state.user.id)
           .then((res) => {
-            // console.log(res.data);
+            // console.log(res.data.profile[0]);
             this.setState(() => {
-              return { profile: res.data.profile };
+              return { profile: res.data.profile[0] };
             });
             this.setState(() => {
               return { stats: res.data.stats[0] };
@@ -154,7 +154,7 @@ class AppProvider extends Component {
             this.setState(() => {
               return { posts: res.data.posts };
             });
-            // console.log(this.state.posts);
+            // console.log(this.state.profile);
           })
           .catch((err) => {
             console.log("not the response");

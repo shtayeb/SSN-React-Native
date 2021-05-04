@@ -12,8 +12,8 @@ import Header from "../../../components/Header";
 import API from "../../../constants/API";
 
 const ProfileListHeader = ({ stats, profile, navigation, logOut, flag }) => {
-  //   console.log(profile);
-  const [isFollowed, setIsFollowed] = useState(false);
+  // console.log(stats.follows);
+  const [isFollowed, setIsFollowed] = useState(stats.follows);
   let followText = isFollowed ? "Unfollow" : "Follow";
   //   let followText = "Follow";
   const handleFollowPress = () => {
