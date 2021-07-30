@@ -10,6 +10,7 @@ import {
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import Header from "../../../components/Header";
 import API from "../../../constants/API";
+import { RESOURCE_URL } from "../../../constants/Variables";
 
 const ProfileListHeader = ({ stats, profile, navigation, logOut, flag }) => {
   // console.log(stats.follows);
@@ -53,8 +54,7 @@ const ProfileListHeader = ({ stats, profile, navigation, logOut, flag }) => {
             style={styles.userImg}
             source={{
               uri: stats.profileImage
-                ? "http://192.168.43.12" + stats.profileImage ||
-                  "https://lh5.googleusercontent.com/-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg"
+                ? RESOURCE_URL + stats.profileImage
                 : "https://lh5.googleusercontent.com/-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg",
             }}
           />
@@ -117,7 +117,7 @@ const ProfileListHeader = ({ stats, profile, navigation, logOut, flag }) => {
           )}
           <TouchableOpacity
             style={styles.userBtn}
-            onPress={() => navigation.navigate("Followings")}
+            onPress={() => navigation.navigate("Followings", { profile })}
           >
             <Text style={styles.userBtnTxt}>Followings</Text>
           </TouchableOpacity>
@@ -125,7 +125,7 @@ const ProfileListHeader = ({ stats, profile, navigation, logOut, flag }) => {
           <TouchableOpacity
             style={styles.userBtn}
             onPress={() => {
-              navigation.navigate("Followers");
+              navigation.navigate("Followers", { profile });
             }}
           >
             <Text style={styles.userBtnTxt}>Followers</Text>

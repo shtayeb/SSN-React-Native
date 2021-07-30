@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef, useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -11,76 +11,61 @@ import {
   SafeAreaView,
 } from "react-native";
 import Header from "../../../components/Header";
+import API from "../../../constants/API";
+import { RESOURCE_URL } from "../../../constants/Variables";
+import { AppContext } from "../../../Context/MyContext";
+export default function Followings(props) {
+  const passedProfile = props.route.params.profile;
+  const [calls, setCalls] = useState(null);
+  const contextValue = React.useContext(AppContext);
+  const { user } = contextValue;
+  // const profile = contextValue["profile"];
 
-export default function Followings({ navigation }) {
-  const [calls, setCalls] = useState([
-    {
-      id: 1,
-      name: "Mark Doe",
-      status: "active",
-      image: "https://bootdey.com/img/Content/avatar/avatar7.png",
-    },
-    {
-      id: 2,
-      name: "Clark Man",
-      status: "active",
-      image: "https://bootdey.com/img/Content/avatar/avatar6.png",
-    },
-    {
-      id: 3,
-      name: "Jaden Boor",
-      status: "active",
-      image: "https://bootdey.com/img/Content/avatar/avatar5.png",
-    },
-    {
-      id: 4,
-      name: "Srick Tree",
-      status: "active",
-      image: "https://bootdey.com/img/Content/avatar/avatar4.png",
-    },
-    {
-      id: 5,
-      name: "Erick Doe",
-      status: "active",
-      image: "https://bootdey.com/img/Content/avatar/avatar3.png",
-    },
-    {
-      id: 6,
-      name: "Francis Doe",
-      status: "active",
-      image: "https://bootdey.com/img/Content/avatar/avatar2.png",
-    },
-    {
-      id: 8,
-      name: "Matilde Doe",
-      status: "active",
-      image: "https://bootdey.com/img/Content/avatar/avatar1.png",
-    },
-    {
-      id: 9,
-      name: "John Doe",
-      status: "active",
-      image: "https://bootdey.com/img/Content/avatar/avatar4.png",
-    },
-    {
-      id: 10,
-      name: "Fermod Doe",
-      status: "active",
-      image: "https://bootdey.com/img/Content/avatar/avatar7.png",
-    },
-    {
-      id: 11,
-      name: "Danny Doe",
-      status: "active",
-      image: "https://bootdey.com/img/Content/avatar/avatar1.png",
-    },
-  ]);
+  useEffect(() => {
+    // "/profile/"+"{user.id}+"/followers"
+    console.log(passedProfile.user_id);
+    API.get("sanctum/csrf-cookie")
+      .then(() => {
+        API.get(`api/profile/${passedProfile.user_id}/followers`)
+          .then((res) => {
+            console.log(res.data);
+            setCalls(res.data);
+          })
+          .catch((err) => {
+            console.log("not the response");
+            console.log(err);
+          });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    return () => {};
+  }, [passedProfile]);
+
+  const handleUnfollowPress = (id) => {
+    API.post("api/removefollow/" + id)
+      .then((res) => {
+        // let filteredList = calls.filter((profile) => {
+        //   if(profile.id == id){
+        //     profile.follows = !profile.foll;
+        //   }
+        //   return profile.id == id;
+        // });
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const renderItem = ({ item }) => {
     return (
       <TouchableOpacity>
         <View style={styles.row}>
-          <Image source={{ uri: item.image }} style={styles.pic} />
+          <Image
+            source={{ uri: RESOURCE_URL + item.image }}
+            style={styles.pic}
+          />
           <View>
             <View style={styles.nameContainer}>
               <Text
@@ -88,12 +73,20 @@ export default function Followings({ navigation }) {
                 numberOfLines={1}
                 ellipsizeMode="tail"
               >
-                {item.name}
+                {item.title}
               </Text>
-              <Text style={styles.mblTxt}>Mobile</Text>
+              {item.follows ? (
+                <TouchableOpacity onPress={() => handleUnfollowPress(item.id)}>
+                  <Text style={styles.mblTxt}>Unfollow</Text>
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity onPress={() => handleUnfollowPress(item.id)}>
+                  <Text style={styles.mblTxt}>Follow</Text>
+                </TouchableOpacity>
+              )}
             </View>
             <View style={styles.msgContainer}>
-              <Text style={styles.msgTxt}>{item.status}</Text>
+              <Text style={styles.msgTxt}>{item.user.name}</Text>
             </View>
           </View>
         </View>
@@ -103,11 +96,11 @@ export default function Followings({ navigation }) {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <Header
+      {/* <Header
         title="Followers"
         goBack={navigation.goBack}
         openDrawer={navigation.openDrawer}
-      />
+      /> */}
       <FlatList
         // extraData={this.state}
         data={calls}

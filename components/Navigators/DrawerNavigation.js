@@ -37,9 +37,21 @@ export default function DrawerNavigation() {
       <Drawer.Screen name="Profile" component={Profile} />
       <Drawer.Screen name="Notifications" component={NotificationsScreen} />
       <Drawer.Screen name="HomeScreen" component={HomeScreen} />
-      <Drawer.Screen name="EditProfile" component={EditProfile} />
-      <Drawer.Screen name="Followers" component={Followers} />
-      <Drawer.Screen name="Followings" component={Followings} />
+      <Drawer.Screen
+        name="EditProfile"
+        options={{ headerShown: true }}
+        component={EditProfile}
+      />
+      <Drawer.Screen
+        name="Followers"
+        options={{ headerShown: true }}
+        component={Followers}
+      />
+      <Drawer.Screen
+        name="Followings"
+        options={{ headerShown: true }}
+        component={Followings}
+      />
     </Drawer.Navigator>
   );
 }

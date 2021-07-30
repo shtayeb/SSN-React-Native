@@ -12,7 +12,7 @@ class AppProvider extends Component {
   state = {
     user: {},
     test: "done",
-    loggedIn: false,
+    loggedIn: null,
     feedPosts: {},
     profile: {},
     stats: {},
@@ -86,13 +86,15 @@ class AppProvider extends Component {
           console.log(err);
           return "failed";
         });
+    } else {
+      this.setState({ loggedIn: false });
     }
   };
 
   logOut = async () => {
     // call to api/auth/logout to delete token from database
-    this.setState({ user: {} });
-    this.setState(() => false);
+    // this.setState({ user: {} });
+    // this.setState(() => false);
     console.log("out");
     // await AsyncStorage.removeItem("@AuthToken");
     API.get("sanctum/csrf-cookie")
@@ -101,8 +103,8 @@ class AppProvider extends Component {
           .then(async (res) => {
             console.log(res.data);
             await AsyncStorage.removeItem("@AuthToken");
-            this.setState({ loggedIn: false });
             this.setState({ user: {} });
+            this.setState({ loggedIn: false });
             // return "success";
           })
           .catch((err) => {
@@ -116,7 +118,7 @@ class AppProvider extends Component {
   };
 
   setFeedPosts = () => {
-    let tempdata = {};
+    // let tempdata = {};
     API.get("sanctum/csrf-cookie")
       .then(() => {
         API.get("api/main-page")
@@ -196,8 +198,19 @@ class AppProvider extends Component {
     this.setState(() => {
       return { profile: { ...this.state.profile, ...data } };
     });
+    if (data.profileImage) {
+      this.setState(() => {
+        return { stats: { ...this.state.stats, ...data } };
+      });
+    }
     // console.log(this.state.profile);
+    // console.log(this.state.stats);
   };
+  // updateProfileImageContext = (data) => {
+  //   this.setState(() => {
+  //     return { profile: { ...this.state.profile, ...{ profileImage: data } } };
+  //   });
+  // };
   //   The Functions in the context
   __getProfile = (id) => {
     const product = this.state.products.find((item) => item.id === id);
@@ -223,6 +236,7 @@ class AppProvider extends Component {
           getProfile: this.getProfile,
           getExplore: this.getExplore,
           updateProfileDataContext: this.updateProfileDataContext,
+          // updateProfileImageContext: this.updateProfileImageContext,
         }}
       >
         {this.props.children}

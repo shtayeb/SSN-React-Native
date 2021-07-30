@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import React, { Component } from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -27,7 +27,8 @@ export default class AppNavigator extends Component {
     return (
       <AppConsumer>
         {(value) => {
-          if (!value.loggedIn) {
+          if (value.loggedIn == false) {
+            //this is for false
             return (
               <NavigationContainer>
                 <Stack.Navigator initialRouteName="Login">
@@ -54,18 +55,18 @@ export default class AppNavigator extends Component {
                     component={Login}
                     options={{ headerShown: false }}
                   />
-                  <Stack.Screen
+                  {/* <Stack.Screen
                     name="BottomNavigator"
                     component={BottomNavigator}
                     options={{ headerShown: false }}
-                  />
+                  /> */}
                 </Stack.Navigator>
               </NavigationContainer>
             );
           }
 
           //if user is logged in they should see this screens
-          if (value.loggedIn) {
+          if (value.loggedIn == true) {
             return (
               <NavigationContainer>
                 <Stack.Navigator initialRouteName="BottomNavigator">
@@ -77,6 +78,10 @@ export default class AppNavigator extends Component {
                 </Stack.Navigator>
               </NavigationContainer>
             );
+          } else {
+            <View>
+              <Text>Loading</Text>
+            </View>;
           }
         }}
       </AppConsumer>

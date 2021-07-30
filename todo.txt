@@ -5,4 +5,7 @@ fix the profile response from api (it has lots of unused data with it) done
 
 1 - get the books number of downloads increase for the each download
 2 - how to upload image to api from storage of app
-3 - figure the logout and after login data fetching problem
+3 - figure the logout and after login data fetching problem(make a function in the context and call it on the useffect of 
+feed page , problem reloading and more calling to api)
+
+4 - switch from grid view to post view in the profile section
